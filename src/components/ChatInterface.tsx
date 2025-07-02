@@ -1,7 +1,14 @@
 "use client";
 import { ChevronDown, Send, Sparkles } from "lucide-react";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Badge } from "./ui/badge";
 import ModeToggle from "./ModeToggle";
 import { aiOptions } from "@/constants/data";
@@ -14,18 +21,76 @@ import {
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
+import { AIProvider, Message, User } from "@/types";
+interface ChatInterfaceProps {
+  messages: Message[];
+  isAnonymous: boolean;
+  isLoading: boolean;
+  sendMessage: (text: string) => Promise<void>;
+  selectedAI: AIProvider;
+  setSelectedAI: Dispatch<SetStateAction<AIProvider>>;
+  user: User | null;
+  currentChatId: string | null;
+  createNewChat: () => Promise<string | null>;
+  routerPush: (url: string) => void;
+}
 
-const ChatInterface = () => {
+const ChatInterface = ({
+  messages,
+  isAnonymous,
+  isLoading,
+  sendMessage,
+  selectedAI,
+  setSelectedAI,
+  user,
+  currentChatId,
+  createNewChat,
+  routerPush,
+}: ChatInterfaceProps) => {
   const [inputMessage, setInputMessage] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const isAnonymous = true;
-  const currentAI = aiOptions[0];
+  const currentAI =
+    aiOptions.find((ai) => ai.id === selectedAI) || aiOptions[0];
 
-  const handleSendMessage = () => {
-    console.log(inputMessage);
+  const handleSendMessage = async (e?: FormEvent) => {
+    e?.preventDefault();
+    if (!inputMessage.trim() || isLoading) return;
+
+    try {
+      if (user && !isAnonymous && !currentChatId) {
+        const newChatId = await createNewChat();
+
+        if (newChatId && newChatId !== "anonymous") {
+          await sendMessage(inputMessage);
+          setInputMessage("");
+          inputRef.current?.focus();
+          routerPush(`/chat/${newChatId}`);
+        } else {
+          throw new Error("Failed to create new chat");
+        }
+      } else {
+        await sendMessage(inputMessage);
+        setInputMessage("");
+        inputRef.current?.focus();
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
   };
 
+  // Scroll to the bottom when messages change
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
     <div className="flex flex-col h-screen bg-background w-full">
       {/* Header */}
@@ -75,7 +140,10 @@ const ChatInterface = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {aiOptions?.map((ai) => (
-                  <DropdownMenuItem key={ai.id}>
+                  <DropdownMenuItem
+                    key={ai.id}
+                    onClick={() => setSelectedAI(ai.id)}
+                  >
                     <div className="flex items-center space-x-3 p-3">
                       <div
                         className={`h-8 w-8 rounded-lg bg-gradient-to-r ${ai.color} flex items-center justify-center`}

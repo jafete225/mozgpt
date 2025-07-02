@@ -10,13 +10,22 @@ import { Badge } from "./ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "./AuthModal";
 import { useRouter } from "next/navigation";
+import { useChat } from "@/hooks/useChat";
 
 const ChatSideBar = () => {
   const { user, signOut } = useAuth();
+  const {
+    currentChatId,
+    deleteChat,
+    isAnonymous,
+    createNewChat,
+    chats,
+    selectChat,
+  } = useChat();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const router = useRouter();
-  const isAnonymous = true;
+
   const handleNewChat = () => {};
   const handleSignOut = async () => {
     try {
@@ -87,12 +96,14 @@ const ChatSideBar = () => {
                 <AvatarFallback
                   className={isAnonymous ? "bg-yellow-500" : "bg-blue-500"}
                 >
-                  <User />
+                  <User className="h-4 w-4 text-white" />
                 </AvatarFallback>
               </Avatar>
               <div className="min-h-0 flex-1">
                 <p className="text-sm font-medium line-clamp-1">
-                  Anonymous User
+                  {user?.displayName ||
+                    user?.email?.split("@")[0] ||
+                    "Anonymous User"}
                 </p>
                 <div className="flex mt-0.5 items-center space-x-1">
                   <Badge variant={isAnonymous ? "secondary" : "default"}>
@@ -114,8 +125,8 @@ const ChatSideBar = () => {
                   <LogIn className="h-4 w-4" />
                 </Button>
               ) : (
-                <Button variant={"ghost"} size={"icon"}>
-                  <LogOut className="h-4 w-4" onClick={handleSignOut} />
+                <Button variant={"ghost"} size={"icon"} onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4" />
                 </Button>
               )}
             </div>
