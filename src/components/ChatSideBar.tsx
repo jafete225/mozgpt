@@ -7,13 +7,26 @@ import { Separator } from "./ui/separator";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
+import { useAuth } from "@/hooks/useAuth";
+import AuthModal from "./AuthModal";
+import { useRouter } from "next/navigation";
 
 const ChatSideBar = () => {
+  const { user, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const router = useRouter();
   const isAnonymous = true;
   const handleNewChat = () => {};
-  const handleSignOut = () => {};
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      // await createNewChat();
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
   const SidebarContent = () => {
     return (
       <div className="flex h-full flex-col">
@@ -116,6 +129,14 @@ const ChatSideBar = () => {
       <div className="hidden h-full lg:flex lg:w-80 lg:flex-col lg:border-r">
         <SidebarContent />
       </div>
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        mode={authMode}
+        onSwitchMode={() =>
+          setAuthMode(authMode === "signin" ? "signup" : "signin")
+        }
+      />
     </div>
   );
 };
