@@ -125,7 +125,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {resetMode ? (
+            {resetSent ? (
               <div className="text-center space-y-4">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
                   <Mail className="h-8 w-8 text-green-600 dark:text-green-400" />

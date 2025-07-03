@@ -80,12 +80,6 @@ const ChatInterface = ({
       console.error("Error sending message:", error);
     }
   };
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
 
   // Scroll to the bottom when messages change
   useEffect(() => {

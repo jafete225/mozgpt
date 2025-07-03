@@ -169,7 +169,7 @@ export const useAuthProvider = () => {
     try {
       setLoading(true);
 
-      const result = await signInAnonymously(auth);
+      await signInAnonymously(auth);
     } catch (error) {
       console.error("❌ Anonymous sign-in error:", error);
       if (error instanceof Error) {
