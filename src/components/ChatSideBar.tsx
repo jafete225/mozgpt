@@ -1,5 +1,13 @@
 "use client";
-import { LogIn, LogOut, Plus, Sparkles, User } from "lucide-react";
+import {
+  LogIn,
+  LogOut,
+  MessageCircle,
+  Plus,
+  Sparkles,
+  Trash2,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
@@ -11,6 +19,9 @@ import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "./AuthModal";
 import { useRouter } from "next/navigation";
 import { useChat } from "@/hooks/useChat";
+import { ScrollArea } from "./ui/scroll-area";
+import { Chat } from "@/types";
+import { toast } from "sonner";
 
 const ChatSideBar = () => {
   const { user, signOut } = useAuth();
@@ -26,7 +37,14 @@ const ChatSideBar = () => {
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const router = useRouter();
 
-  const handleNewChat = () => {};
+  const handleNewChat = async () => {
+    const newChatId = await createNewChat();
+    if (newChatId && newChatId !== "anonymous") {
+      router.push(`/chat/${newChatId}`);
+    } else if (newChatId === "anonymous") {
+      router.push("/chat");
+    }
+  };
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -85,7 +103,68 @@ const ChatSideBar = () => {
         )}
         {/* Chat List */}
         <div className="flex-1 overflow-hidden p-4">
-          <p>Chat list will go here</p>
+          <ScrollArea className="h-full">
+            {chats?.length === 0 ? (
+              <div className="text-center py-8">
+                <MessageCircle className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  {isAnonymous ? "No saved chats" : "No chats yet"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {isAnonymous
+                    ? "Sign in to save conversations"
+                    : "Start a conversation to see your chats here"}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {chats?.map((chat: Chat) => (
+                  <Card
+                    key={chat?.id}
+                    className={`cursor-pointer transition-colors group ${
+                      currentChatId === chat.id
+                        ? "bg-accent border-accent-foreground/20"
+                        : "hover:bg-accent/50"
+                    }`}
+                    onClick={() => {
+                      selectChat(chat.id);
+                      router.push(`/chat/${chat.id}`);
+                    }}
+                  >
+                    <CardContent className="px-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-sm truncate">
+                            {chat?.title}
+                          </h4>
+                          <div className="flex items-center space-x-2 mt-1">
+                            <Badge variant={"secondary"} className="text-xs">
+                              {chat?.aiProvider}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              {chat.messageCount} messages
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteChat(chat.id);
+                            toast("Chat deleted successfully!");
+                          }}
+                          variant={"ghost"}
+                          size="icon"
+                          className="opacity-0 group-hover:opacity-100 h-6 w-6"
+                        >
+                          <Trash2 className="h-3 w-3 text-destructive" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
         </div>
         <Separator />
         {/* User Information */}

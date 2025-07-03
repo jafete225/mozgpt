@@ -35,7 +35,7 @@ export const addMessage = async (
       sender,
       ai: aiProvider,
       userId: userId || "anonymous",
-      timestamp: serverTimestamp,
+      timestamp: serverTimestamp(),
       createdAt: serverTimestamp(),
     };
     const docRef = await addDoc(messagesCollection, messageData);

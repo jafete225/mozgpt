@@ -181,7 +181,7 @@ export const useChat = () => {
       }
 
       setCurrentChatId(chatId);
-      setMessages([]);
+      // setMessages([]);
     },
     [user, chats]
   );

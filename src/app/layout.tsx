@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import ChatSideBar from "@/components/ChatSideBar";
 import { AuthProvider } from "@/hooks/useAuth";
+import { Toaster } from "@/components/sooner";
 
 export const metadata: Metadata = {
   title: "AI Chat Hub - Multiple AI Assistants",
@@ -39,6 +40,7 @@ export default function RootLayout({
               <ChatSideBar />
               {children}
             </div>
+            <Toaster />
           </AuthProvider>
         </ThemeProvider>
       </body>
