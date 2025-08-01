@@ -13,8 +13,8 @@ const AppLoading = () => {
         <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
           <Sparkles className="w-8 h-8 animate-spin" />
         </div>
-        <h2 className="text-2xl font-bold mb-2">Loading AI Chat Hub...</h2>
-        <p className="text-gray-400">Initializing your chat experience</p>
+        <h2 className="text-2xl font-bold mb-2">A carregar o Moz Chat ...</h2>
+        <p className="text-gray-400">A preparar a tua experiência de conversa</p>
       </div>
     </div>
   );

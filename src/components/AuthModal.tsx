@@ -49,12 +49,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
       setError(
         err && typeof err === "object" && "message" in err
           ? String((err as { message: unknown }).message)
-          : "An error occurred"
+          : "Ocorreu um erro"
       );
     } finally {
       setLoading(false);
     }
   };
+
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError("");
@@ -66,12 +67,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
       setError(
         err && typeof err === "object" && "message" in err
           ? String((err as { message: unknown }).message)
-          : "An error occurred"
+          : "Ocorreu um erro"
       );
     } finally {
       setLoading(false);
     }
   };
+
   const handlePasswordReset = async (e: FormEvent) => {
     e.preventDefault();
     if (!email) return;
@@ -86,22 +88,23 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
       setError(
         err && typeof err === "object" && "message" in err
           ? String((err as { message: unknown }).message)
-          : "An error occurred"
+          : "Ocorreu um erro"
       );
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogTitle>
           <VisuallyHidden>
             {resetMode
-              ? "Reset Password"
+              ? "Redefinir Senha"
               : mode === "signin"
-              ? "Sign In"
-              : "Sign Up"}
+              ? "Entrar"
+              : "Criar Conta"}
           </VisuallyHidden>
         </DialogTitle>
         <Card className="border-0 shadow-none">
@@ -111,17 +114,17 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
             </div>
             <CardTitle className="text-2xl">
               {resetMode
-                ? "Reset Password"
+                ? "Redefinir Senha"
                 : mode === "signin"
-                ? "Welcome Back"
-                : "Create Account"}
+                ? "Bem-vindo de Volta"
+                : "Criar Conta"}
             </CardTitle>
             <CardDescription>
               {resetMode
-                ? "Enter your email to reset your password"
+                ? "Introduza o seu email para redefinir a senha"
                 : mode === "signin"
-                ? "Sign in to access your chat history"
-                : "Join AI Chat Hub to save your conversations"}
+                ? "Entre para aceder ao seu histórico de conversas"
+                : "Junte-se ao Moz Chat  para guardar as suas conversas"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -131,9 +134,9 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                   <Mail className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Check Your Email</h3>
+                  <h3 className="text-lg font-semibold">Verifique o seu Email</h3>
                   <p className="text-muted-foreground">
-                    We&apos;ve sent a password reset link to {email}
+                    Enviámos um link de redefinição de senha para {email}
                   </p>
                 </div>
                 <Button
@@ -144,7 +147,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                     setEmail("");
                   }}
                 >
-                  Back to Sign In
+                  Voltar para Entrar
                 </Button>
               </div>
             ) : (
@@ -160,7 +163,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder="Digite o seu email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -170,12 +173,12 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                   {!resetMode && (
                     <div className="space-y-2">
                       <label htmlFor="password" className="text-sm font-medium">
-                        Password
+                        Senha
                       </label>
                       <Input
                         id="password"
                         type="password"
-                        placeholder="Enter your password"
+                        placeholder="Digite a sua senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -193,12 +196,12 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                   )}
                   <Button className="w-full" type="submit">
                     {loading
-                      ? "Loading..."
+                      ? "A carregar..."
                       : resetMode
-                      ? "Send Reset Link"
+                      ? "Enviar link de redefinição"
                       : mode === "signin"
-                      ? "Sign In"
-                      : "Create Account"}
+                      ? "Entrar"
+                      : "Criar Conta"}
                   </Button>
                 </form>
                 {!resetMode && (
@@ -209,7 +212,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                       </div>
                       <div className="relative flex justify-center text-xs uppercase">
                         <span className="bg-background px-2 text-muted-foreground">
-                          Or continue with
+                          Ou continue com
                         </span>
                       </div>
                     </div>
@@ -231,14 +234,14 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                           onClick={() => setResetMode(true)}
                           className="h-auto p-0 mt-2"
                         >
-                          Forgot your password?
+                          Esqueceu a sua senha?
                         </Button>
                       )}
                       <div>
                         <span className="text-muted-foreground">
                           {mode === "signin"
-                            ? "Don't have an account? "
-                            : "Already have an account? "}
+                            ? "Não tem uma conta? "
+                            : "Já tem uma conta? "}
                         </span>
                         <Button
                           type="button"
@@ -246,7 +249,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                           onClick={onSwitchMode}
                           className="h-auto p-0 mt-2"
                         >
-                          {mode === "signin" ? "Sign Up" : "Sign In"}
+                          {mode === "signin" ? "Criar Conta" : "Entrar"}
                         </Button>
                       </div>
                     </div>

@@ -7,7 +7,7 @@ export const aiOptions: AIOption[] = [
     name: "ChatGPT",
     icon: MessageCircle,
     color: "from-green-400 to-emerald-500",
-    description: "OpenAI's powerful language model",
+    description: "Modelo de linguagem avançado da OpenAI",
   },
 
   {
@@ -15,20 +15,20 @@ export const aiOptions: AIOption[] = [
     name: "Grok",
     icon: Zap,
     color: "from-blue-400 to-purple-500",
-    description: "X's witty AI companion",
+    description: "Companheiro de IA inteligente do X (Twitter)",
   },
   {
     id: "gemini",
     name: "Gemini",
     icon: Cpu,
     color: "from-pink-400 to-rose-500",
-    description: "Google's multimodal AI",
+    description: "IA Multimodal da Google",
   },
   {
     id: "claude",
     name: "Claude",
     icon: Brain,
     color: "from-orange-400 to-red-500",
-    description: "Anthropic's helpful AI assistant",
+    description: "Assistente inteligente da Anthropic",
   },
 ];
