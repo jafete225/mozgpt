@@ -38,7 +38,9 @@ export default function RootLayout({
           <AuthProvider>
             <div className="min-h-screen flex">
               <ChatSideBar />
-              {children}
+              <main className="flex-1 pt-16 lg:pt-0 lg:pl-0">
+                {children}
+              </main>
             </div>
             <Toaster />
           </AuthProvider>

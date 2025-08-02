@@ -22,6 +22,28 @@ import { useChat } from "@/hooks/useChat";
 import { ScrollArea } from "./ui/scroll-area";
 import { Chat } from "@/types";
 import { toast } from "sonner";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "./ui/sheet";
+import { Menu } from "lucide-react";
+
+// Componente MobileMenu para exibir o menu em dispositivos móveis
+const MobileMenu = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="lg:hidden">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="fixed top-4 left-4 z-50">
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Abrir menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[280px] p-0">
+          <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
+          {children}
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+};
 
 const ChatSideBar = () => {
   const { user, signOut } = useAuth();
@@ -223,6 +245,12 @@ const ChatSideBar = () => {
 
   return (
     <div className="max-h-screen">
+      {/* Menu Mobile */}
+      <MobileMenu>
+        <SidebarContent />
+      </MobileMenu>
+
+      {/* Sidebar Desktop */}
       <div className="hidden h-full lg:flex lg:w-80 lg:flex-col lg:border-r">
         <SidebarContent />
       </div>

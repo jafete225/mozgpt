@@ -1,5 +1,5 @@
 "use client";
-import { ChevronDown, Send, Sparkles } from "lucide-react";
+import { ChevronDown, Menu, Send, Sheet, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React, {
   Dispatch,
@@ -24,6 +24,7 @@ import { Input } from "./ui/input";
 import { AIProvider, Message, User } from "@/types";
 import { ScrollArea } from "./ui/scroll-area";
 import MessageList from "./MessageList";
+import { SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -82,6 +83,26 @@ const ChatInterface = ({
     }
   };
 
+  // Componente MobileMenu para exibir o menu em dispositivos móveis
+  const MobileMenu = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <div className="lg:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="fixed top-4 left-4 z-50">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Abrir menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[280px] p-0">
+            <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
+            {children}
+          </SheetContent>
+        </Sheet>
+      </div>
+    );
+  };
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -95,6 +116,8 @@ const ChatInterface = ({
         <div className="container flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
+              
+              
               <div className="ml-8 lg:ml-0 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-purple-500 to-pink-500">
                 <Sparkles className="h-4 w-4 text-white" />
               </div>
